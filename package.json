@@ -1,0 +1,21 @@
+{
+  "name": "ecohotel",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug",
+    "test:ui": "playwright test --ui",
+    "test:login": "playwright test login.spec.ts",
+    "test:login-component": "playwright test login-with-component.spec.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@playwright/test": "^1.54.1",
+    "playwright": "^1.54.1"
+  }
+}
