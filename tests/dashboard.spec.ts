@@ -101,13 +101,12 @@ test.describe('Dashboard Test Cases', () => {
     // Use the codegen flow for profile update
     await page.getByRole('link', { name: 'Settings' }).click();
     await page.getByRole('link', { name: 'My Profile' }).click();
-    await page.getByRole('button', { name: 'Edit' }).click();
+    await page.getByRole('button', { name: 'Edit' }).first().click();
     await page.getByRole('textbox', { name: 'Enter your first name' }).click();
     // Generate dynamic name with timestamp
     const timestamp = Date.now();
     const dynamicName = `Test${timestamp}`;
     await page.getByRole('textbox', { name: 'Enter your first name' }).fill(dynamicName);
-    await page.getByRole('button', { name: 'Done' }).click();
     await page.getByRole('button', { name: 'Save' }).click();
   });
 
