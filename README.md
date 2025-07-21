@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # EcoHotel Login Tests
 
 This project contains comprehensive automated tests for the EcoHotel login functionality using Playwright.
@@ -125,3 +126,6 @@ The project uses the default Playwright configuration in `playwright.config.ts` 
 - Some assertions may need adjustment based on the actual behavior of the website
 - Error message selectors may need updates if the website changes
 - The "Show password" functionality selector may need adjustment based on the actual implementation
+=======
+# Ecohotel
+>>>>>>> 57c315241715ce649bc4adb4195df7172367e665
