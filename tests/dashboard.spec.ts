@@ -137,4 +137,17 @@ test.describe('Dashboard Test Cases', () => {
     await dashboard.navBookings.click();
     await dashboard.navLevel.click();
   });
+
+  test('DB-12 Verify that profile icon dropdown (Dashboard, Profile, Bookings) are clickable', async ({ page }) => {
+    await loginAndValidateDashboard(page);
+    // Open dropdown and click Dashboard
+    await page.locator('.bi > path').first().click();
+    await page.locator('#dropdown-menu-content').getByRole('link', { name: 'Dashboard' }).click();
+    // Open dropdown and click Profile
+    await page.locator('.bi > path').first().click();
+    await page.getByRole('link', { name: 'Profile', exact: true }).click();
+    // Open dropdown and click Bookings
+    await page.locator('.bi > path').first().click();
+    await page.locator('#dropdown-menu-content').getByRole('link', { name: 'Bookings' }).click();
+  });
 }); 

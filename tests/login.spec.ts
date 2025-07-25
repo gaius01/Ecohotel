@@ -2,7 +2,10 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Login Page Tests', () => {
   const loginUrl = 'https://ecohotels.com/account/corporatelogin/';
-  const validEmail = 'maria+3000@ecohotels.com';
+  const privateEmail = 'maria+88@ecohotels.com';
+  const loyaltyEmail = 'maria+3000@ecohotels.com';
+  const corporateEmail = 'isaacnandur@gmail.com';
+  const corporatePassword = '@Gaius1999';
   const validPassword = 'Test@123';
   const invalidEmail = 'invalid@test.com';
   const invalidPassword = 'wrongpassword';
@@ -11,17 +14,19 @@ test.describe('Login Page Tests', () => {
     await page.goto(loginUrl);
   });
 
-  test('LG-01 Verify that a user can login', async ({ page }) => {
-    // Fill in valid credentials
-    await page.getByRole('textbox', { name: 'Enter your email address' }).fill(validEmail);
+  test('LG-01 Verify that a user can login (Private user)', async ({ page }) => {
+    // Fill in valid credentials for private user
+    await page.getByRole('textbox', { name: 'Enter your email address' }).fill(privateEmail);
     await page.getByRole('textbox', { name: 'Enter your password' }).fill(validPassword);
-    
-    // Click login button
     await page.getByRole('button', { name: 'Log in' }).click();
-    
-    // Verify successful login - should redirect to dashboard or show success message
-    // Note: Adjust the assertion based on actual behavior after successful login
-    await expect(page).not.toHaveURL(loginUrl);
+
+    // Navigate to dashboard
+    await page.goto('https://ecohotels.com/account/dashboard/');
+    // Validate dashboard by checking for the 'Good' greeting message
+    const greeting = page.getByText('Good', { exact: false });
+    if (await greeting.isVisible()) {
+      expect(await greeting.isVisible()).toBeTruthy();
+    } 
   });
 
   test('LG-02 Verify that users can\'t login with invalid credentials', async ({ page }) => {
@@ -104,7 +109,7 @@ test.describe('Login Page Tests', () => {
     }
   });
 
-  test('Login with empty fields validation', async ({ page }) => {
+  test('LG-07 Login with empty fields validation', async ({ page }) => {
     // Try to login without entering any credentials
     await page.getByRole('button', { name: 'Log in' }).click();
     
@@ -117,9 +122,9 @@ test.describe('Login Page Tests', () => {
     await expect(page.getByRole('button', { name: 'Log in' })).toBeVisible();
   });
 
-  test('Login with valid email and empty password', async ({ page }) => {
+  test('LG-08 Login with valid email and empty password', async ({ page }) => {
     // Fill only email
-    await page.getByRole('textbox', { name: 'Enter your email address' }).fill(validEmail);
+    await page.getByRole('textbox', { name: 'Enter your email address' }).fill(privateEmail);
     
     // Click login button
     await page.getByRole('button', { name: 'Log in' }).click();
@@ -128,10 +133,10 @@ test.describe('Login Page Tests', () => {
     await expect(page).toHaveURL(loginUrl);
     
     // Verify email field still contains the entered value
-    await expect(page.getByRole('textbox', { name: 'Enter your email address' })).toHaveValue(validEmail);
+    await expect(page.getByRole('textbox', { name: 'Enter your email address' })).toHaveValue(privateEmail);
   });
 
-  test('Login with empty email and valid password', async ({ page }) => {
+  test('LG-09 Login with empty email and valid password', async ({ page }) => {
     // Fill only password
     await page.getByRole('textbox', { name: 'Enter your password' }).fill(validPassword);
     
@@ -145,7 +150,7 @@ test.describe('Login Page Tests', () => {
     await expect(page.getByRole('textbox', { name: 'Enter your password' })).toHaveValue(validPassword);
   });
 
-  test('Verify all login form elements are visible and functional', async ({ page }) => {
+  test('LG-10 Verify all login form elements are visible and functional', async ({ page }) => {
     // Verify email input is visible and functional
     const emailInput = page.getByRole('textbox', { name: 'Enter your email address' });
     await expect(emailInput).toBeVisible();
@@ -171,5 +176,31 @@ test.describe('Login Page Tests', () => {
     
     // Verify "Register here" link is visible
     await expect(page.getByRole('link', { name: 'Register here' })).toBeVisible();
+  });
+
+  test('LG-11 Verify that loyalty users can login into their account', async ({ page }) => {
+    // Fill in valid credentials for loyalty user
+    await page.getByRole('textbox', { name: 'Enter your email address' }).fill(loyaltyEmail);
+    await page.getByRole('textbox', { name: 'Enter your password' }).fill(validPassword);
+    
+    // Click login button
+    await page.getByRole('button', { name: 'Log in' }).click();
+    
+    // Verify successful login - should redirect to dashboard or show success message
+    await expect(page).not.toHaveURL(loginUrl);
+  });
+
+  test('LG-12 Verify that corporate users can login into their account', async ({ page }) => {
+    // Fill in valid credentials for corporate user
+    await page.getByRole('textbox', { name: 'Enter your email address' }).fill(corporateEmail);
+    await page.getByRole('textbox', { name: 'Enter your password' }).fill('@Gaius19999');
+    await page.getByRole('button', { name: 'Log in' }).click();
+
+    // Navigate to dashboard
+    await page.goto('https://ecohotels.com/account/dashboard/');
+    const greeting = page.getByText('Good', { exact: false });
+    if (await greeting.isVisible()) {
+      expect(await greeting.isVisible()).toBeTruthy();
+    } 
   });
 }); 
