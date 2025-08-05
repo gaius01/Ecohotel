@@ -11,6 +11,8 @@ test.describe('SEARCH RESULTS', () => {
 
   test.beforeAll(async ({ browser }) => {
     const page = await browser.newPage();
+
+    
     search = new SearchComponent(page);
     await search.runHomePageSearch();
     searchResultUrl = page.url();

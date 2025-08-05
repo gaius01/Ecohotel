@@ -185,4 +185,29 @@ test.describe('Home Page Test Cases', () => {
     await home.agreeToTerms();
     await expect(home.emailInput).toHaveValue('maria+404@ecohotels.com');
   });
+
+  // SR-01: Search for "Axel Guldsmeden" from the home page, select it, pick dates, and press search
+  test('SR-01: Home - Search for Axel Guldsmeden, select suggestion, pick dates, and search', async ({ page }) => {
+    const home = new HomePageComponent(page);
+    await home.gotoHome();
+    await home.acceptCookiesIfPresent();
+    // Fill destination and select suggestion
+    await home.destinationInput.click();
+    await home.destinationInput.fill('Axel Guldsmeden');
+    await page.locator('h4.font-ManropeBold').filter({ hasText: 'Axel Guldsmeden' }).click();
+    // Dynamic date selection (today and tomorrow)
+    const today = new Date();
+    const tomorrow = new Date();
+    tomorrow.setDate(today.getDate() + 1);
+    const todayDate = today.getDate().toString();
+    const tomorrowDate = tomorrow.getDate().toString();
+    await page.getByRole('button', { name: todayDate }).first().click();
+    await page.getByRole('button', { name: todayDate }).first().click(); // double click as in codegen
+    await page.getByRole('button', { name: tomorrowDate }).first().click();
+    await home.clickSearch();
+    // Wait for search results page to load
+    await page.waitForLoadState('networkidle');
+    // Verify we're on a search results page (URL should change from home)
+    await expect(page).not.toHaveURL('https://ecohotels.com/');
+  });
 }); 
